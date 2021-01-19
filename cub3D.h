@@ -6,7 +6,7 @@
 /*   By: larlena <larlena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 15:13:53 by larlena           #+#    #+#             */
-/*   Updated: 2021/01/15 19:39:27 by larlena          ###   ########.fr       */
+/*   Updated: 2021/01/19 19:49:58 by larlena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@
 # include "mlx.h"
 # include <unistd.h>
 # include <stdlib.h>
-#include <fcntl.h>
+# include <fcntl.h>
+
+# define ERROR -1
 
 typedef struct		s_data
 {
@@ -43,6 +45,8 @@ typedef struct		s_cfg
 	int				f_c;
 	int				res_x;
 	int				res_y;
+	int				color_floor;
+	int				color_ceilling;
 	char			*texture_NO;
 	char			*texture_SO;
 	char			*texture_WE;
@@ -61,6 +65,8 @@ int			ft_cfg_parser(int fd, t_all *all);
 int			ft_check_identifier(char *str, t_all *all);
 int			ft_parsing_resolution(const char *str, t_all *all, int *f_any);
 int			ft_parsing_texture(const char *str, t_all *all, int *f_any);
-int			ft_parsing_color(const char *str, t_all *all, int *f_any);
+int			ft_parsing_color(const char *str, t_all *all, int *color, int *f_any);
+
+int			ft_error_handling(int code);
 
 #endif
