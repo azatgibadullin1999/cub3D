@@ -1,10 +1,10 @@
 R 1920 1080   
-NO ./mlx.h
-SO ./mlx.h
-WE ./mlx.h
-EA ./mlx.h
+NO ./includes/mlx.h
+SO ./includes/mlx.h
+WE ./includes/mlx.h
+EA ./includes/mlx.h
 
-S ./mlx.h
+S ./includes/mlx.h
 F 220,100,0
 C 225,30,0
 
@@ -22,4 +22,3 @@ C 225,30,0
 11000001110101011111011110N0111
 11110111 1110101 101111010001
 11111111 1111111 111111111111
-

@@ -6,11 +6,11 @@
 /*   By: larlena <larlena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 15:14:04 by larlena           #+#    #+#             */
-/*   Updated: 2021/01/15 19:19:08 by larlena          ###   ########.fr       */
+/*   Updated: 2021/01/21 17:46:25 by larlena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "./includes/cub3D.h"
 
 int		main(int argc, char **argv)
 {
