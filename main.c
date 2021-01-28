@@ -6,18 +6,34 @@
 /*   By: larlena <larlena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 15:14:04 by larlena           #+#    #+#             */
-/*   Updated: 2021/01/21 17:46:25 by larlena          ###   ########.fr       */
+/*   Updated: 2021/01/28 18:13:26 by larlena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./includes/cub3D.h"
+
+void	ft_printmap(char **map)
+{
+	size_t	i;
+
+	i = 0;
+	ft_putendl_fd("/", 1);
+	while (map[i])
+	{
+		ft_putendl_fd(map[i], 1);
+		i++;
+	}
+	ft_putendl_fd("/", 1);
+}
 
 int		main(int argc, char **argv)
 {
 	t_all	all;
 	char	*tmp = "/Users/larlena/Documents/my_git/cub3D/cfg.cub";
 
-	ft_get_cfg(tmp, &all);
+	if (ft_get_cfg(tmp, &all))
+		return (ERROR);
+
 	// all.data.mlx = mlx_init();
 	// all.data.mlx_win = mlx_new_window(all.data.mlx, 1920, 1080, "I love Russia!");
 	// all.data.img = mlx_new_image(all.data.mlx, 1920, 1080);

@@ -6,11 +6,11 @@
 /*   By: larlena <larlena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 17:43:41 by larlena           #+#    #+#             */
-/*   Updated: 2021/01/21 17:58:32 by larlena          ###   ########.fr       */
+/*   Updated: 2021/01/22 16:51:49 by larlena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3D.h"
+#include "../includes/parser.h"
 
 int		ft_parsing_resolution(const char *str, t_all *all, int *f_any)
 {
@@ -37,4 +37,3 @@ int		ft_parsing_resolution(const char *str, t_all *all, int *f_any)
 	free(tmp);
 	return (0);
 }
-

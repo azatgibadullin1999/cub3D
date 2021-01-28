@@ -1,27 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_parsing_map.c                                   :+:      :+:    :+:   */
+/*   ft_parsing_map_3.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: larlena <larlena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/19 18:54:34 by larlena           #+#    #+#             */
-/*   Updated: 2021/01/19 19:40:41 by larlena          ###   ########.fr       */
+/*   Created: 2021/01/28 18:40:33 by larlena           #+#    #+#             */
+/*   Updated: 2021/01/28 18:57:18 by larlena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "../includes/parser.h"
 
-int		ft_map_parser(int fd, t_all *all)
+
+int		ft_isstartchar(int c)
 {
-	t_list	*start;
-	t_list	*tmp;
-	char	*str;
+	if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
+		return (1);
+	return (0);
+}
 
-	while (get_next_line(fd, &str))
+void	ft_del_array(char **map)
+{
+	size_t	i;
+
+	i = 0;
+	while (map[i])
 	{
-		tmp = ft_lstnew(str);
-		ft_lstadd_back(&start, tmp);
-
+		free(map[i]);
+		i++;
 	}
+	free(map);
+}
+
+void	ft_del_content(void *content)
+{
+	free(content);
 }

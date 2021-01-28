@@ -6,7 +6,7 @@
 /*   By: larlena <larlena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 15:13:53 by larlena           #+#    #+#             */
-/*   Updated: 2021/01/21 17:28:04 by larlena          ###   ########.fr       */
+/*   Updated: 2021/01/28 18:51:49 by larlena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,20 +54,26 @@ typedef struct		s_cfg
 	char			*texture_sprite;
 }					t_cfg;
 
+typedef struct		s_player
+{
+	double			x;
+	double			y;
+	char			direction;
+}					t_player;
+
 typedef struct		s_all
 {
+	char			**map;
 	t_data			data;
 	t_cfg			cfg;
+	t_player		player;
 }					t_all;
 
 int			ft_get_cfg(const char *filename, t_all *all);
 int			ft_cfg_parser(int fd, t_all *all);
 int			ft_check_identifier(char *str, t_all *all);
-int			ft_parsing_resolution(const char *str, t_all *all, int *f_any);
-int			ft_parsing_texture(const char *str, t_all *all, int *f_any);
-int			ft_parsing_color(const char *str, t_all *all, int *color, int *f_any);
-int			ft_parsing_map(int fd, t_all *all);
-
 int			ft_error_handling(char *str);
+
+# include "parser.h"
 
 #endif

@@ -6,18 +6,19 @@
 /*   By: larlena <larlena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 17:55:32 by larlena           #+#    #+#             */
-/*   Updated: 2021/01/21 17:56:21 by larlena          ###   ########.fr       */
+/*   Updated: 2021/01/22 16:52:11 by larlena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3D.h"
 
-static int	create_trgb(int t, int r, int g, int b)
+int			create_trgb(int t, int r, int g, int b)
 {
 	return (t << 24 | r << 16 | g << 8 | b);
 }
 
-int			ft_parsing_color(const char *str, t_all *all, int *color, int *f_any)
+int			ft_parsing_color(const char *str, t_all *all,
+							int *color, int *f_any)
 {
 	int		buff[3];
 	char	*tmp;
