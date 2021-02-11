@@ -6,19 +6,19 @@
 /*   By: larlena <larlena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 18:11:31 by larlena           #+#    #+#             */
-/*   Updated: 2021/02/11 14:59:47 by larlena          ###   ########.fr       */
+/*   Updated: 2021/02/11 19:20:48 by larlena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3D.h"
 
-void	ft_computation_of_direction_ray(t_ray *ray, t_player *player, int res_x, int i)
+void	ft_computation_of_direction_ray(t_ray *ray, t_player *player, int res_x, double i)
 {
 	player->camera = 2 * i / res_x - 1;
 	ray->ray_dir_x = player->dir_x + player->plane_x * player->camera;
 	ray->ray_dir_y = player->dir_y + player->plane_y * player->camera;
-	ray->delta_dist_x = sqrt(1 + (ray->ray_dir_y * ray->ray_dir_y) / (ray->ray_dir_x * ray->ray_dir_x));
-	ray->delta_dist_y = sqrt(1 + (ray->ray_dir_x * ray->ray_dir_x) / (ray->ray_dir_y * ray->ray_dir_y));
+	ray->delta_dist_x = ray->ray_dir_y == 0 ? 0 : ray->ray_dir_x == 0 ? 1 : sqrt(1 + (ray->ray_dir_y * ray->ray_dir_y) / (ray->ray_dir_x * ray->ray_dir_x));
+	ray->delta_dist_y = ray->ray_dir_x == 0 ? 0 : ray->ray_dir_y == 0 ? 1 : sqrt(1 + (ray->ray_dir_x * ray->ray_dir_x) / (ray->ray_dir_y * ray->ray_dir_y));
 }
 
 void	ft_computation_of_side(t_ray *ray, t_player *player)
@@ -69,7 +69,7 @@ void	ft_render(t_all *all, int x)
 	int		draw_end;
 
 	y = -1;
-	line_height = all->cfg.res_y * all->ray.perp_wall_dist;
+	line_height = (int)all->ray.perp_wall_dist;
 	if (0 > (draw_start = -line_height / 2 - all->cfg.res_y / 2))
 		draw_start = 0;
 	if (all->cfg.res_y >= (draw_end = line_height / 2 + all->cfg.res_y / 2))
@@ -77,7 +77,7 @@ void	ft_render(t_all *all, int x)
 	while(all->cfg.res_y > ++y)
 	{
 		if (y >= draw_start && y <= draw_end)
-			my_mlx_pixel_put(&all->data, y, x, 0x000000FF);
+			my_mlx_pixel_put(&all->data, y, x, 0x00000FF0);
 		else
 			my_mlx_pixel_put(&all->data, y, x, 0x00FF0000);
 	}
@@ -93,16 +93,18 @@ int		ft_raycastiong(t_all *all)
 	while (all->cfg.res_x > ++x)
 	{
 		hit = 0;
+		all->ray.map_x = all->player.x;
+		all->ray.map_y = all->player.y;
 		ft_computation_of_direction_ray(&all->ray, &all->player, all->cfg.res_x, x);
 		ft_computation_of_side(&all->ray, &all->player);
 		while (!hit)
 		{
 			ft_ray_iteration(&all->ray, &side);
-			hit = all->map[all->ray.map_x][all->ray.map_y] > 0 ? 1 : 0;
+			hit = all->map[all->ray.map_y][all->ray.map_x] != '0' ? 1 : 0;
 		}
 		all->ray.perp_wall_dist = !side ?
-		(all->ray.map_x - all->player.x + (1 - all->ray.step_x) / 2) / all->ray.ray_dir_x :
-		(all->ray.map_y - all->player.y + (1 - all->ray.step_y) / 2) / all->ray.ray_dir_y;
+		(all->ray.map_y - all->player.y + (1 - all->ray.step_y) / 2) / all->ray.ray_dir_y :
+		(all->ray.map_x - all->player.x + (1 - all->ray.step_x) / 2) / all->ray.ray_dir_x;
 		ft_render(all, x);
 	}
 	return (0);

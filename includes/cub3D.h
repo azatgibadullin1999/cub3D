@@ -6,7 +6,7 @@
 /*   By: larlena <larlena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 15:13:53 by larlena           #+#    #+#             */
-/*   Updated: 2021/02/11 15:27:48 by larlena          ###   ########.fr       */
+/*   Updated: 2021/02/11 17:04:57 by larlena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,6 @@ int			ft_get_mlx_params(t_data *data);
 int			ft_check_identifier(char *str, t_all *all);
 int			ft_error_handling(char *str);
 void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
+int			ft_raycastiong(t_all *all);
 
 #endif

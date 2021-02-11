@@ -6,7 +6,7 @@
 /*   By: larlena <larlena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 18:54:34 by larlena           #+#    #+#             */
-/*   Updated: 2021/02/06 16:12:05 by larlena          ###   ########.fr       */
+/*   Updated: 2021/02/11 17:49:02 by larlena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ int		ft_get_starting_point(t_all *all)
 			if (ft_isstartchar(all->map[y][x]) == 1)
 			{
 				ft_initialisation_player(&all->player, y, x, all->map[y][x]);
+				all->map[y][x] = '0';
 				f_start += 1;
 			}
 		}

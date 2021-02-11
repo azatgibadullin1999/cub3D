@@ -6,7 +6,7 @@
 /*   By: larlena <larlena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 17:43:41 by larlena           #+#    #+#             */
-/*   Updated: 2021/02/04 21:32:34 by larlena          ###   ########.fr       */
+/*   Updated: 2021/02/11 19:14:48 by larlena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,6 @@ int		ft_parsing_resolution(const char *str, t_all *all, int *f_any)
 		return (ft_error_handling("Wrong Resolution"));
 	}
 	free(tmp);
-	all->cfg.scale = 40;
+	all->cfg.scale = 10;
 	return (0);
 }
