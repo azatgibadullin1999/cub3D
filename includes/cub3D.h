@@ -6,7 +6,7 @@
 /*   By: larlena <larlena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 15:13:53 by larlena           #+#    #+#             */
-/*   Updated: 2021/02/09 16:43:38 by larlena          ###   ########.fr       */
+/*   Updated: 2021/02/11 15:27:48 by larlena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # include <fcntl.h>
 # include "structs.h"
 # include "parser.h"
+
+#include <stdio.h>
 
 # define ERROR -1
 # define ESC 53

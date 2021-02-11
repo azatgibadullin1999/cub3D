@@ -6,7 +6,7 @@
 /*   By: larlena <larlena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 18:40:33 by larlena           #+#    #+#             */
-/*   Updated: 2021/02/09 12:47:32 by larlena          ###   ########.fr       */
+/*   Updated: 2021/02/11 15:46:42 by larlena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ void	ft_initialisation_player(t_player *player, int y, int x, int diraction)
 	player->move_speed = 0.05;
 	player->turn_speed = 0.05;
 	if (diraction == 'W')
-		;
+		player->dir_x = 1;
+		player->dir_y = 0;
 	if (diraction == 'S')
 		;
 	if (diraction == 'N')

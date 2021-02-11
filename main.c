@@ -6,7 +6,7 @@
 /*   By: larlena <larlena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 15:14:04 by larlena           #+#    #+#             */
-/*   Updated: 2021/02/11 15:00:12 by larlena          ###   ########.fr       */
+/*   Updated: 2021/02/11 15:26:26 by larlena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int		main(int argc, char **argv)
 		return (ERROR);
 	ft_get_mlx_params(&all.data);
 	ft_render_map(&all);
+	ft_putstr_fd("huita rabotaet!", 1);
 	mlx_put_image_to_window(all.data.mlx, all.data.mlx_win, all.data.img, 0, 0);
 	mlx_hook(all.data.mlx_win, 2, 1L<<2, ft_kay_hook, &all);
 	mlx_loop(all.data.mlx);
