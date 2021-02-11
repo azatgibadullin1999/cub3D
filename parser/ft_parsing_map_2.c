@@ -6,52 +6,78 @@
 /*   By: larlena <larlena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 18:03:06 by larlena           #+#    #+#             */
-/*   Updated: 2021/01/28 19:31:01 by larlena          ###   ########.fr       */
+/*   Updated: 2021/02/05 19:09:48 by larlena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/parser.h"
 
-char	**ft_mapdup(char **map)
+t_list	*ft_maplen(t_list *start, int *line_num, int *line_size)
+{
+	t_list	*dst;
+	int		i;
+	int		f;
+
+	f = 0;
+	*line_num = 1;
+	*line_size = 0;
+	while (start)
+	{
+		i = -1;
+		while (start->content[++i])
+		{
+			if (!f && ft_isvalid(start->content[i]))
+			{
+				dst = start;
+				f = 1;
+			}
+		}
+		if (f == 1)
+		{
+			*line_num += 1;
+			*line_size = *line_size < i ? i : *line_size;
+		}
+		start = start->next;
+	}
+	return (dst);
+}
+
+char	**ft_mapdup(t_all *all)
 {
 	char	**dst;
-	size_t	line_num;
-	size_t	line_size;
 	size_t	i;
 
 	i = 0;
-	line_num = 0;
-	while (map[line_num])
-		line_num++;
-	if (!(dst = (char **)ft_calloc(sizeof(char *), line_num + 1)))
-		return (ERROR);
-	while (i < line_num)
+	if (!(dst = (char **)ft_calloc(sizeof(char *), all->map_y + 2)))
+		return (NULL);
+	while (i < all->map_y)
 	{
-		if (!(dst[i] = ft_strdup(map[i])))
+		if (!(dst[i] = calloc(sizeof(char), all->map_x + 2)))
 		{
 			dst[i] = NULL;
 			ft_del_array(dst);
-			return (ERROR);
+			return (NULL);
 		}
+		ft_memcpy(dst[i], all->map[i], all->map_x + 1);
 		i++;
 	}
 	return (dst);
 }
 
-int		ft_isvalid(int c)
+int		ft_flood_fill(char **map, int y, int x)
 {
-	return (ft_isstartchar(c) || c == '0' || c == '2');
-}
-
-int		ft_iswrong(int c)
-{
-	return (!ft_isfreechar(c) || c != '1' || c != '.');
-}
-
-int		ft_food_fill(char **map, int y, int x)
-{
-	map[y][x] = '.';
-	if (ft_iswrong(map[y][x + 1]) || (ft_isvalid(map[y][x + 1]) || ft_food_fill(map, y, x + 1)))
+	if (ft_isvalid(map[y][x]) == 0)
 		return (ERROR);
-
+	if (ft_isvalid(map[y][x]) == 1)
+		return (0);
+	map[y][x] = '.';
+	if (ft_flood_fill(map, y, x + 1))
+		return (ERROR);
+	if (ft_flood_fill(map, y + 1, x))
+		return (ERROR);
+	if (ft_flood_fill(map, y - 1, x))
+		return (ERROR);
+	if (ft_flood_fill(map, y, x - 1))
+		return (ERROR);
+	return (0);
 }

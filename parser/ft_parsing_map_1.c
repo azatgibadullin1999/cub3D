@@ -6,34 +6,35 @@
 /*   By: larlena <larlena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 18:54:34 by larlena           #+#    #+#             */
-/*   Updated: 2021/01/28 18:57:34 by larlena          ###   ########.fr       */
+/*   Updated: 2021/02/06 16:12:05 by larlena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/parser.h"
-#include <stdio.h>
 
-int		ft_convert_list_to_array(t_list *start, char ***map)
+int		ft_convert_list_to_array(t_list *map, t_all *all)
 {
 	size_t	i;
-	size_t	line_num;
-	size_t	line_size;
+	t_list	*start;
 
 	i = 0;
-	line_num = ft_lstsize(start);
-	if (!(*map = (char **)malloc(sizeof(char *) * (line_num + 1))))
+	start = NULL;
+	start = ft_maplen(map, &all->map_y, &all->map_x);
+	if (!(all->map = (char **)calloc(sizeof(char *), all->map_y + 2)))
 		return (ft_error_handling("Malloc error"));
-	(*map)[line_num] = NULL;
-	while (i < line_num)
+	while (i < all->map_y)
 	{
-		line_size = ft_strlen(start->content) + 1;
-		if (!((*map)[i] = malloc(sizeof(char) * (line_size))))
+		if (!(all->map[i] = calloc(sizeof(char), all->map_x + 2)))
 		{
-			ft_del_array(*map);
+			ft_del_array(all->map);
 			return (ft_error_handling("Malloc Error"));
 		}
-		ft_strlcpy((*map)[i], start->content, line_size);
-		start = start->next;
+		if (i >= 1 && i <= all->map_y)
+		{
+			ft_strlcpy(&all->map[i][1], start->content,
+			ft_strlen(start->content) + 1);
+			start = start->next;
+		}
 		i++;
 	}
 	return (0);
@@ -53,27 +54,31 @@ int		ft_get_map_in_list(t_list **start, int fd, t_all *all)
 		}
 		ft_lstadd_back(start, tmp);
 	}
+	if (!(tmp = ft_lstnew(str)))
+	{
+		ft_lstclear(start, ft_del_content);
+		return (ft_error_handling("Malloc error"));
+	}
+	ft_lstadd_back(start, tmp);
 	return (0);
 }
 
-int		ft_get_starting_point(char **map, t_all *all)
+int		ft_get_starting_point(t_all *all)
 {
 	int		y;
 	int		x;
 	int		f_start;
 
-	y = -1;
+	y = 0;
 	f_start = 0;
-	while (map[++y])
+	while (all->map[++y])
 	{
-		x = -1;
-		while (map[y][++x])
+		x = 0;
+		while (all->map[y][++x])
 		{
-			if (ft_isstartchar(map[y][x]) == 1)
+			if (ft_isstartchar(all->map[y][x]) == 1)
 			{
-				all->player.y = (double)y;
-				all->player.x = (double)x;
-				all->player.direction = map[y][x];
+				ft_initialisation_player(&all->player, y, x, all->map[y][x]);
 				f_start += 1;
 			}
 		}
@@ -83,40 +88,41 @@ int		ft_get_starting_point(char **map, t_all *all)
 	return (0);
 }
 
-int		ft_map_validation(char **map, t_all *all)
+int		ft_map_validation(t_all *all)
 {
 	char	**tmp;
 
-	if (!(tmp = ft_mapdup(map)))
+	if (!(tmp = ft_mapdup(all)))
+	{
+		ft_del_array(tmp);
 		return (ft_error_handling("Malloc error"));
+	}
 	if (ft_flood_fill(tmp, (int)all->player.y, (int)all->player.x))
 	{
-		free (tmp);
+		ft_del_array(tmp);
 		return (ft_error_handling("Wrong map"));
 	}
-	free(tmp);
+	ft_del_array(tmp);
 	return (0);
 }
 
 int		ft_parsing_map(int fd, t_all *all)
 {
 	t_list	*start;
-	char	**map;
 
 	start = NULL;
 	if (ft_get_map_in_list(&start, fd, all))
 		return (ERROR);
-	if (ft_convert_list_to_array(start, &map))
+	if (ft_convert_list_to_array(start, all))
 	{
 		ft_lstclear(&start, ft_del_content);
 		return (ERROR);
 	}
 	ft_lstclear(&start, ft_del_content);
-	if (ft_get_starting_point(map, all) || ft_map_validation(map, all))
+	if (ft_get_starting_point(all) || ft_map_validation(all))
 	{
-		ft_del_array(map);
+		ft_del_array(all->map);
 		return (ERROR);
 	}
-	all->map = map;
 	return (0);
 }

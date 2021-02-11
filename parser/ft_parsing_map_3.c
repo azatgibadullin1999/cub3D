@@ -6,12 +6,11 @@
 /*   By: larlena <larlena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 18:40:33 by larlena           #+#    #+#             */
-/*   Updated: 2021/01/28 18:57:18 by larlena          ###   ########.fr       */
+/*   Updated: 2021/02/09 12:47:32 by larlena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/parser.h"
-
 
 int		ft_isstartchar(int c)
 {
@@ -36,4 +35,31 @@ void	ft_del_array(char **map)
 void	ft_del_content(void *content)
 {
 	free(content);
+}
+
+int		ft_isvalid(int c)
+{
+	if (c == '1' || c == '.')
+		return (1);
+	if (ft_isstartchar(c) || c == '0' || c == '2')
+		return (2);
+	return (0);
+}
+
+void	ft_initialisation_player(t_player *player, int y, int x, int diraction)
+{
+	player->x = (double)x;
+	player->y = (double)y;
+	player->plane_x = 0;
+	player->plane_y = 0.66;
+	player->move_speed = 0.05;
+	player->turn_speed = 0.05;
+	if (diraction == 'W')
+		;
+	if (diraction == 'S')
+		;
+	if (diraction == 'N')
+		;
+	if (diraction == 'E')
+		;
 }

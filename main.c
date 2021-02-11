@@ -6,24 +6,27 @@
 /*   By: larlena <larlena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 15:14:04 by larlena           #+#    #+#             */
-/*   Updated: 2021/01/28 18:13:26 by larlena          ###   ########.fr       */
+/*   Updated: 2021/02/11 15:00:12 by larlena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./includes/cub3D.h"
 
-void	ft_printmap(char **map)
+int		ft_get_mlx_params(t_data *data)
 {
-	size_t	i;
+	data->mlx = mlx_init();
+	data->mlx_win = mlx_new_window(data->mlx, 1920, 1080, "I love Russia!");
+	data->img = mlx_new_image(data->mlx, 1920, 1080);
+	data->addr = mlx_get_data_addr(data->img, &data->bits_per_pixel, &data->line_length,
+								&data->endian);
+	return (0);
+}
 
-	i = 0;
-	ft_putendl_fd("/", 1);
-	while (map[i])
-	{
-		ft_putendl_fd(map[i], 1);
-		i++;
-	}
-	ft_putendl_fd("/", 1);
+void	my_mlx_pixel_put(t_data *data, int y, int x, int color)
+{
+	char	*dst;
+	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+	*(unsigned int*)dst = color;
 }
 
 int		main(int argc, char **argv)
@@ -33,32 +36,10 @@ int		main(int argc, char **argv)
 
 	if (ft_get_cfg(tmp, &all))
 		return (ERROR);
-
-	// all.data.mlx = mlx_init();
-	// all.data.mlx_win = mlx_new_window(all.data.mlx, 1920, 1080, "I love Russia!");
-	// all.data.img = mlx_new_image(all.data.mlx, 1920, 1080);
-	// all.data.addr = mlx_get_data_addr(all.data.img, &all.data.bits_per_pixel, &all.data.line_length,
-	// 							&all.data.endian);
-	// mlx_loop(all.data.mlx);
-	// mlx_hook()
+	ft_get_mlx_params(&all.data);
+	ft_render_map(&all);
+	mlx_put_image_to_window(all.data.mlx, all.data.mlx_win, all.data.img, 0, 0);
+	mlx_hook(all.data.mlx_win, 2, 1L<<2, ft_kay_hook, &all);
+	mlx_loop(all.data.mlx);
 	return (0);
 }
-
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
-{
-	char	*dst;
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	*(unsigned int*)dst = color;
-}
-
-	// while (x < 100)
-	// {
-	// 	y = y_buf;
-	// 	while (y < 200)
-	// 	{
-	// 		my_mlx_pixel_put(&img, x, y, 0x00FFF000);
-	// 		y++;
-	// 	}
-	// 	x++;
-	// }
-	// mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
