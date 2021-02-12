@@ -6,7 +6,7 @@
 /*   By: larlena <larlena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/31 17:23:55 by larlena           #+#    #+#             */
-/*   Updated: 2021/02/09 14:46:06 by larlena          ###   ########.fr       */
+/*   Updated: 2021/02/12 17:29:05 by larlena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ typedef struct		s_player
 {
 	double			turn_speed;
 	double			move_speed;
-	double			camera;
 	double			x;
 	double			y;
 	double			dir_x;
@@ -61,6 +60,7 @@ typedef struct		s_player
 
 typedef struct		s_ray
 {
+	double			camera;
 	int				map_x;
 	int				map_y;
 	int				step_x;
@@ -72,6 +72,7 @@ typedef struct		s_ray
 	double			delta_dist_x;
 	double			delta_dist_y;
 	double			perp_wall_dist;
+	int				wall_height;
 }					t_ray;
 
 typedef struct		s_all

@@ -6,7 +6,7 @@
 /*   By: larlena <larlena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 18:00:27 by larlena           #+#    #+#             */
-/*   Updated: 2021/02/11 15:52:04 by larlena          ###   ########.fr       */
+/*   Updated: 2021/02/12 20:24:46 by larlena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,24 +32,24 @@ void	ft_move_player(t_player *player, char **map, int kay_code)
 
 int		ft_turn_player(t_player *player, int kay_code)
 {
-	double	old_dir_x;
-	double	old_plane_x;
+	double	old_dir_y;
+	double	old_plane_y;
 
-	old_dir_x = player->dir_x;
-	old_plane_x = player->plane_x;
+	old_dir_y = player->dir_y;
+	old_plane_y = player->plane_y;
 	if (kay_code == R_T)
 	{
-		player->dir_x = old_dir_x * cos(-player->turn_speed) - player->dir_y * sin(-player->turn_speed);
-		player->dir_y = old_dir_x * sin(-player->turn_speed) + player->dir_x * cos(-player->turn_speed);
-		player->plane_x = old_plane_x * cos(-player->turn_speed) - player->plane_y * sin(-player->turn_speed);
-		player->plane_y = old_plane_x * sin(-player->turn_speed) - player->plane_y * cos(-player->turn_speed);
+		player->dir_y = old_dir_y * cos(-player->turn_speed) - player->dir_x * sin(-player->turn_speed);
+		player->dir_x = old_dir_y * sin(-player->turn_speed) + player->dir_x * cos(-player->turn_speed);
+		player->plane_y = old_plane_y * cos(-player->turn_speed) - player->plane_x * sin(-player->turn_speed);
+		player->plane_x = old_plane_y * sin(-player->turn_speed) - player->plane_x * cos(-player->turn_speed);
 	}
-	if (kay_code == R_T)
+	else if (kay_code == L_T)
 	{
-		player->dir_x = old_dir_x * cos(player->turn_speed) - player->dir_y * sin(player->turn_speed);
-		player->dir_y = old_dir_x * sin(player->turn_speed) + player->dir_x * cos(player->turn_speed);
-		player->plane_x = old_plane_x * cos(player->turn_speed) - player->plane_y * sin(player->turn_speed);
-		player->plane_y = old_plane_x * sin(player->turn_speed) - player->plane_y * cos(player->turn_speed);
+		player->dir_y = old_dir_y * cos(player->turn_speed) - player->dir_x * sin(player->turn_speed);
+		player->dir_x = old_dir_y * sin(player->turn_speed) + player->dir_x * cos(player->turn_speed);
+		player->plane_y = old_plane_y * cos(player->turn_speed) - player->plane_x * sin(player->turn_speed);
+		player->plane_x = old_plane_y * sin(player->turn_speed) - player->plane_x * cos(player->turn_speed);
 	}
 	return (0);
 }
@@ -62,8 +62,8 @@ int		ft_kay_hook(int kay_code, t_all *all)
 		ft_turn_player(&all->player, kay_code);
 	printf("%lf\n", all->player.x);
 	printf("%lf\n", all->player.y);
-	ft_raycastiong(all);
 	ft_render_map(all);
+	ft_raycastiong(all->map, &all->cfg, &all->player, &all->ray);
 	mlx_put_image_to_window(all->data.mlx, all->data.mlx_win, all->data.img, 0, 0);
 	if (kay_code == ESC)
 		exit(0);

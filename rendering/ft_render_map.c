@@ -6,7 +6,7 @@
 /*   By: larlena <larlena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:02:56 by larlena           #+#    #+#             */
-/*   Updated: 2021/02/04 21:27:28 by larlena          ###   ########.fr       */
+/*   Updated: 2021/02/12 16:05:46 by larlena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ int		ft_print_square(t_all *all, int y, int x, int color)
 
 	buff_x = x;
 	max_y = y + all->cfg.scale;
-	while (max_y > ++y)
+	while (max_y >= ++y)
 	{
 		x = buff_x;
 		max_x = x + all->cfg.scale;
-		while (max_x > ++x)
+		while (max_x >= ++x)
 		{
 			my_mlx_pixel_put(&all->data, y, x, color);
 		}

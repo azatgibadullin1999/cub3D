@@ -6,7 +6,7 @@
 /*   By: larlena <larlena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 17:41:12 by larlena           #+#    #+#             */
-/*   Updated: 2021/01/28 11:46:08 by larlena          ###   ########.fr       */
+/*   Updated: 2021/02/12 11:49:17 by larlena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int		ft_cfg_parser(int fd, t_all *all)
 	return (0);
 }
 
-void	ft_struct_to_zero(t_all *all)
+void	ft_inicialisation_struct(t_all *all)
 {
 	all->cfg.f_r = 0;
 	all->cfg.f_c = 0;
@@ -69,6 +69,7 @@ void	ft_struct_to_zero(t_all *all)
 	all->cfg.f_ea = 0;
 	all->cfg.f_so = 0;
 	all->cfg.f_we = 0;
+	all->ray.wall_height = 50;
 }
 
 int		ft_get_cfg(const char *filename, t_all *all)
@@ -77,7 +78,7 @@ int		ft_get_cfg(const char *filename, t_all *all)
 
 	if (!(fd = open(filename, O_RDONLY)))
 		return (ft_error_handling("File error"));
-	ft_struct_to_zero(all);
+	ft_inicialisation_struct(all);
 	if (ft_cfg_parser(fd, all) == ERROR)
 		return (ERROR);
 	if (ft_parsing_map(fd, all) == ERROR)
