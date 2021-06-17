@@ -6,7 +6,7 @@
 /*   By: larlena <larlena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 18:00:27 by larlena           #+#    #+#             */
-/*   Updated: 2021/02/12 20:24:46 by larlena          ###   ########.fr       */
+/*   Updated: 2021/02/18 15:29:58 by larlena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,30 +42,30 @@ int		ft_turn_player(t_player *player, int kay_code)
 		player->dir_y = old_dir_y * cos(-player->turn_speed) - player->dir_x * sin(-player->turn_speed);
 		player->dir_x = old_dir_y * sin(-player->turn_speed) + player->dir_x * cos(-player->turn_speed);
 		player->plane_y = old_plane_y * cos(-player->turn_speed) - player->plane_x * sin(-player->turn_speed);
-		player->plane_x = old_plane_y * sin(-player->turn_speed) - player->plane_x * cos(-player->turn_speed);
+		player->plane_x = old_plane_y * sin(-player->turn_speed) + player->plane_x * cos(-player->turn_speed);
 	}
 	else if (kay_code == L_T)
 	{
 		player->dir_y = old_dir_y * cos(player->turn_speed) - player->dir_x * sin(player->turn_speed);
 		player->dir_x = old_dir_y * sin(player->turn_speed) + player->dir_x * cos(player->turn_speed);
 		player->plane_y = old_plane_y * cos(player->turn_speed) - player->plane_x * sin(player->turn_speed);
-		player->plane_x = old_plane_y * sin(player->turn_speed) - player->plane_x * cos(player->turn_speed);
+		player->plane_x = old_plane_y * sin(player->turn_speed) + player->plane_x * cos(player->turn_speed);
 	}
 	return (0);
 }
 
 int		ft_kay_hook(int kay_code, t_all *all)
 {
-	if (kay_code == W || kay_code == A || kay_code == S || kay_code == D)
-		ft_move_player(&all->player, all->map, kay_code);
-	if (kay_code == R_T || kay_code == L_T)
-		ft_turn_player(&all->player, kay_code);
-	printf("%lf\n", all->player.x);
-	printf("%lf\n", all->player.y);
-	ft_render_map(all);
-	ft_raycastiong(all->map, &all->cfg, &all->player, &all->ray);
-	mlx_put_image_to_window(all->data.mlx, all->data.mlx_win, all->data.img, 0, 0);
 	if (kay_code == ESC)
 		exit(0);
+	else if (kay_code == W || kay_code == A || kay_code == S || kay_code == D)
+		ft_move_player(&all->player, all->map, kay_code);
+	else if (kay_code == R_T || kay_code == L_T)
+		ft_turn_player(&all->player, kay_code);
+//	printf("%lf\n", all->player.x);
+//	printf("%lf\n", all->player.y);
+	ft_raycastiong(all);
+	ft_render_map(all);
+	mlx_put_image_to_window(all->data.mlx, all->data.mlx_win, all->data.img, 0, 0);
 	return (0);
 }

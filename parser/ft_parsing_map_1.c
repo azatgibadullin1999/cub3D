@@ -6,7 +6,7 @@
 /*   By: larlena <larlena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 18:54:34 by larlena           #+#    #+#             */
-/*   Updated: 2021/02/11 17:49:02 by larlena          ###   ########.fr       */
+/*   Updated: 2021/03/12 17:14:35 by larlena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,18 @@
 
 int		ft_convert_list_to_array(t_list *map, t_all *all)
 {
-	size_t	i;
+	int		i;
 	t_list	*start;
 
 	i = 0;
 	start = NULL;
 	start = ft_maplen(map, &all->map_y, &all->map_x);
 	if (!(all->map = (char **)calloc(sizeof(char *), all->map_y + 2)))
-		return (ft_error_handling("Malloc error"));
+		ft_error_handling("Malloc error");
 	while (i < all->map_y)
 	{
 		if (!(all->map[i] = calloc(sizeof(char), all->map_x + 2)))
-		{
-			ft_del_array(all->map);
-			return (ft_error_handling("Malloc Error"));
-		}
+			ft_error_handling("Malloc Error");
 		if (i >= 1 && i <= all->map_y)
 		{
 			ft_strlcpy(&all->map[i][1], start->content,
@@ -40,7 +37,7 @@ int		ft_convert_list_to_array(t_list *map, t_all *all)
 	return (0);
 }
 
-int		ft_get_map_in_list(t_list **start, int fd, t_all *all)
+int		ft_get_map_in_list(t_list **start, int fd)
 {
 	t_list	*tmp;
 	char	*str;
@@ -48,17 +45,11 @@ int		ft_get_map_in_list(t_list **start, int fd, t_all *all)
 	while (get_next_line(fd, &str))
 	{
 		if (!(tmp = ft_lstnew(str)))
-		{
-			ft_lstclear(start, ft_del_content);
-			return (ft_error_handling("Malloc error"));
-		}
+			ft_error_handling("Malloc error");
 		ft_lstadd_back(start, tmp);
 	}
 	if (!(tmp = ft_lstnew(str)))
-	{
-		ft_lstclear(start, ft_del_content);
-		return (ft_error_handling("Malloc error"));
-	}
+		ft_error_handling("Malloc error");
 	ft_lstadd_back(start, tmp);
 	return (0);
 }
@@ -85,23 +76,32 @@ int		ft_get_starting_point(t_all *all)
 		}
 	}
 	if (f_start != 1)
-		return (ft_error_handling("Wrong map"));
+		ft_error_handling("Wrong map");
 	return (0);
 }
 
 int		ft_map_validation(t_all *all)
 {
 	char	**tmp;
+	int		x;
+	int		y;
 
-	if (!(tmp = ft_mapdup(all)))
+	tmp = ft_mapdup(all);
+	y = 0;
+	while (++y < all->map_y)
 	{
-		ft_del_array(tmp);
-		return (ft_error_handling("Malloc error"));
-	}
-	if (ft_flood_fill(tmp, (int)all->player.y, (int)all->player.x))
-	{
-		ft_del_array(tmp);
-		return (ft_error_handling("Wrong map"));
+		x = 0;
+		while (++x < all->map_x)
+		{
+			if (all->map[y][x] == '0' || all->map[y][x] == '2')
+			{
+				if (ft_flood_fill(all, tmp, y, x))
+					ft_error_handling("Wrong map");
+			}
+			if (!ft_isvalid(all->map[y][x]) && all->map[y][x] != ' ' &&
+			all->map[y][x] != '\0')
+				ft_error_handling("Wrong map");
+		}
 	}
 	ft_del_array(tmp);
 	return (0);
@@ -112,14 +112,9 @@ int		ft_parsing_map(int fd, t_all *all)
 	t_list	*start;
 
 	start = NULL;
-	if (ft_get_map_in_list(&start, fd, all))
-		return (ERROR);
-	if (ft_convert_list_to_array(start, all))
-	{
-		ft_lstclear(&start, ft_del_content);
-		return (ERROR);
-	}
-	ft_lstclear(&start, ft_del_content);
+	ft_get_map_in_list(&start, fd);
+	ft_convert_list_to_array(start, all);
+	ft_lstclear(&start, free);
 	if (ft_get_starting_point(all) || ft_map_validation(all))
 	{
 		ft_del_array(all->map);

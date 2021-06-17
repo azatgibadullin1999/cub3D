@@ -6,7 +6,7 @@
 /*   By: larlena <larlena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 18:40:33 by larlena           #+#    #+#             */
-/*   Updated: 2021/02/11 18:50:25 by larlena          ###   ########.fr       */
+/*   Updated: 2021/03/12 17:07:51 by larlena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,12 @@ void	ft_del_array(char **map)
 	free(map);
 }
 
-void	ft_del_content(void *content)
+void	ft_sub_maplen(int *line_num, int *line_size, int i)
 {
-	free(content);
+	*line_num += 1;
+	*line_size = i > *line_size ? i : *line_size;
+	if (!i)
+		ft_error_handling("Map error");
 }
 
 int		ft_isvalid(int c)
@@ -46,32 +49,20 @@ int		ft_isvalid(int c)
 	return (0);
 }
 
-void	ft_initialisation_player(t_player *player, int y, int x, int diraction)
+void	ft_filling_struct(t_player *player, int f)
 {
-	player->x = (double)x;
-	player->y = (double)y;
-	player->plane_x = 0;
-	player->plane_y = 0.66;
-	player->move_speed = 0.05;
-	player->turn_speed = 0.05;
-	if (diraction == 'N')
+	if (f == 1 || f == 4)
 	{
 		player->dir_x = 0;
-		player->dir_y = -1;
+		player->dir_y = f == 1 ? -1 : 1;
+		player->plane_y = 0;
+		player->plane_x = f == 1 ? 0.66 : -0.66;
 	}
-	if (diraction == 'E')
+	else if (f == 2 || f == 3)
 	{
-		player->dir_x = 1;
+		player->dir_x = f == 2 ? 1 : -1;
 		player->dir_y = 0;
-	}
-	if (diraction == 'W')
-	{
-		player->dir_x = -1;
-		player->dir_y = 0;
-	}
-	if (diraction == 'S')
-	{
-		player->dir_x = 0;
-		player->dir_y = 1;
+		player->plane_y = f == 2 ? 0.66 : -0.66;
+		player->plane_x = 0;
 	}
 }

@@ -6,41 +6,51 @@
 /*   By: larlena <larlena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 17:55:32 by larlena           #+#    #+#             */
-/*   Updated: 2021/01/22 16:52:11 by larlena          ###   ########.fr       */
+/*   Updated: 2021/03/12 15:37:38 by larlena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3D.h"
+#include "../includes/cub3d.h"
 
-int			create_trgb(int t, int r, int g, int b)
+int		create_trgb(int t, int r, int g, int b)
 {
 	return (t << 24 | r << 16 | g << 8 | b);
 }
 
-int			ft_parsing_color(const char *str, t_all *all,
-							int *color, int *f_any)
+int		ft_create_color(char **tmp)
 {
-	int		buff[3];
-	char	*tmp;
-	size_t	i;
-	size_t	j;
+	int		trgb[3];
+	int		i;
+	int		j;
 
-	i = 0;
 	j = 0;
-	*f_any = 1;
-	if (!(tmp = ft_strtrim(&str[1], " ")))
-		return (ft_error_handling("Malloc error"));
-	while (j < 3 && tmp[i])
+	while (tmp[j] != NULL && j <= 3)
 	{
-		buff[j] = atoi(&tmp[i]);
-		while (ft_isdigit(tmp[i]))
+		i = 0;
+		trgb[j] = ft_atoi(tmp[j]);
+		while (ft_isdigit(tmp[j][i]))
 			i++;
-		i += tmp[i] == ',' ? 1 : 0;
+		if (!i || (trgb[j] > 255 || trgb[j] < 0))
+			ft_error_handling("Wrong color");
 		j++;
 	}
-	free(tmp);
-	if (j < 3)
-		return (ft_error_handling("Wrong color"));
-	*color = create_trgb(0, buff[0], buff[1], buff[2]);
+	if (j != 3)
+		ft_error_handling("wrong color");
+	return (create_trgb(0, trgb[0], trgb[1], trgb[2]));
+}
+
+int		ft_parsing_color(const char *str, int *color, int *f_any)
+{
+	char	*buf;
+	char	**tmp;
+
+	*f_any += 1;
+	if (!(buf = ft_strtrim(&str[1], " ")))
+		ft_error_handling("Malloc error");
+	if (!(tmp = ft_split(buf, ',')))
+		ft_error_handling("Malloc error");
+	free(buf);
+	*color = ft_create_color(tmp);
+	ft_del_array(tmp);
 	return (0);
 }

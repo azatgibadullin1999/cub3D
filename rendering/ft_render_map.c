@@ -6,11 +6,11 @@
 /*   By: larlena <larlena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:02:56 by larlena           #+#    #+#             */
-/*   Updated: 2021/02/12 16:05:46 by larlena          ###   ########.fr       */
+/*   Updated: 2021/03/12 15:37:50 by larlena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3D.h"
+#include "../includes/cub3d.h"
 
 int		ft_print_square(t_all *all, int y, int x, int color)
 {
@@ -34,19 +34,21 @@ int		ft_print_square(t_all *all, int y, int x, int color)
 
 int		ft_render_map(t_all *all)
 {
-	size_t	y;
-	size_t	x;
+	int		y;
+	int		x;
 
 	y = 0;
 	while (all->map_y > ++y)
 	{
 		x = 0;
 		while (all->map_x >= ++x)
-		{	
+		{
 			if (all->map[y][x] == '1')
-				ft_print_square(all, (y * all->cfg.scale), (x * all->cfg.scale), 0x00FFF000);
+				ft_print_square(all, (y * all->cfg.scale),
+				(x * all->cfg.scale), 0x00FFF000);
 		}
 	}
-	ft_print_square(all, (all->player.y * all->cfg.scale), (all->player.x * all->cfg.scale), 0x00000FFF);
+	ft_print_square(all, (all->player.y * all->cfg.scale),
+	(all->player.x * all->cfg.scale), 0x00000FFF);
 	return (0);
 }
